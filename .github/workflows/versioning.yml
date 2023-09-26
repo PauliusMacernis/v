@@ -8,7 +8,7 @@ on:
 jobs:
   update_version_and_changelog:
     if: github.event.pull_request.merged == true
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
