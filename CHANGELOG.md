@@ -1,7 +1,10 @@
 # Changelog
 
-## 8.329.2
+## 8.330.1
 * One more change (POC-7)
+
+## 8.330.0
+* Sixth change (POC-5)
 
 ## 8.329.1
 * Fifth change (POC-5)
