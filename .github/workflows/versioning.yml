@@ -50,14 +50,11 @@ jobs:
           echo "* ${{ github.event.pull_request.title }}" >> CHANGELOG.md
           echo "" >> CHANGELOG.md
 
-      - name: Set up Git with PAT
+      - name: Set up Git with PAT, Commit and push
         run: |
           git config --local user.email "sugalvojau@gmail.com"
           git config --local user.name "GitHub Action"
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
-
-      - name: Commit and push
-        run: |
           git add CHANGELOG.md version.txt
           git commit -m "Update CHANGELOG.md and version.txt"
           git push
