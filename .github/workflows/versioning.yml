@@ -19,13 +19,13 @@ jobs:
         run: |
           branch_name=${{ github.event.pull_request.head.ref }}
           if [[ $branch_name == major/* ]]; then
-            echo "::set-output name=bump::major"
+            echo "bump=major" >> $GITHUB_ENV
           elif [[ $branch_name == minor/* ]]; then
-            echo "::set-output name=bump::minor"
+            echo "bump=minor" >> $GITHUB_ENV
           elif [[ $branch_name == patch/* ]]; then
-            echo "::set-output name=bump::patch"
+            echo "bump=patch" >> $GITHUB_ENV
           else
-            echo "::set-output name=bump::patch" # default to patch if no recognized prefix
+            echo echo "bump=patch" >> $GITHUB_ENV
           fi
 
       - name: Update version.txt
