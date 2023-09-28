@@ -55,6 +55,8 @@ jobs:
           }
           }' CHANGELOG.md > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
 
+      - run: git tag -l
+
       - name: Set up Git with PAT, Commit, Tag and push
         run: |
           git config --local user.email "sugalvojau@gmail.com"
@@ -68,4 +70,7 @@ jobs:
           git tag "v$new_version"
           
           # Push changes and tags
-          git push --follow-tags
+          git push
+          git push --tags
+
+      - run: git tag -l
