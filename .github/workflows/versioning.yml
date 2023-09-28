@@ -46,9 +46,12 @@ jobs:
       - name: Update CHANGELOG.md
         run: |
           new_version=$(cat version.txt)
-          echo "## $new_version" >> CHANGELOG.md
-          echo "* ${{ github.event.pull_request.title }}" >> CHANGELOG.md
-          echo "" >> CHANGELOG.md
+          awk -v ver="$new_version" -v title="${{ github.event.pull_request.title }}" '{
+            print;
+            if (NR==1) {
+              print "\n## " ver "\n* " title "\n";
+            }
+          }' CHANGELOG.md > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
 
       - name: Set up Git with PAT, Commit and push
         run: |
