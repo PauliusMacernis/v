@@ -13,3 +13,4 @@ And again.
 And again.
 
 This line is added in the scope of a task.
+Extra line.
