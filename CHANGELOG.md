@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.333.2
+* POC-8 pull_request_template.md moved to another default dir. PRt1
+
+
 ## 8.333.1
 * POC-8 README.second.md change like a bugfix. PRt1
 
