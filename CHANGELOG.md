@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.330.4
+* POC-8 This line is added in the scope of a bug. PR title1
+
+
 ## 8.330.3
 * Patch/poc 7 PR title1
 
