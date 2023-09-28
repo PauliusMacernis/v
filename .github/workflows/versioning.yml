@@ -55,17 +55,17 @@ jobs:
           }
           }' CHANGELOG.md > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
 
-          - name: Set up Git with PAT, Commit, Tag and push
-            run: |
-              git config --local user.email "sugalvojau@gmail.com"
-              git config --local user.name "GitHub Action"
-              git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
-              git add CHANGELOG.md version.txt
-              git commit -m "Update CHANGELOG.md and version.txt"
-              
-              # Create a tag
-              new_version=$(cat version.txt)
-              git tag "v$new_version"
-              
-              # Push changes and tags
-              git push --follow-tags
+      - name: Set up Git with PAT, Commit, Tag and push
+        run: |
+          git config --local user.email "sugalvojau@gmail.com"
+          git config --local user.name "GitHub Action"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+          git add CHANGELOG.md version.txt
+          git commit -m "Update CHANGELOG.md and version.txt"
+          
+          # Create a tag
+          new_version=$(cat version.txt)
+          git tag "v$new_version"
+          
+          # Push changes and tags
+          git push --follow-tags
