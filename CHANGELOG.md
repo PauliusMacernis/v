@@ -1,9 +1,5 @@
 # Changelog
 
-## 8.330.3
-* POC-7 Place new record of changelog to the top of the file. PR title1
-
-
 ## 8.330.1
 * One more change. (POC-7)
 
@@ -53,11 +49,6 @@
 ## 8.324.0
 * Proin libero nunc consequat interdum varius sit amet mattis (IR-626)
 
-## 8.323.2
-* In aliquam sem fringilla ut morbi tincidunt augue interdum velit. Morbi tempus iaculis urna id volutpat (IR-1015)
-
 ## 8.323.1
 * Fix Massa tincidunt nunc pulvinar sapien. (IR-841)
-## 8.330.2
-* POC-7 README.md update. Pull request title1
 
