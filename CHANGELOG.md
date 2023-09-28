@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.332.0
+* POC-9 Some fixes PRt1
+
+
 ## 8.331.0
 * POC-9 changing the way version bump is achieved PR t1
 
