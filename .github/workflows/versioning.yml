@@ -18,14 +18,14 @@ jobs:
         id: get_version_bump
         run: |
           branch_name=${{ github.event.pull_request.head.ref }}
-          if [[ $branch_name == major/* ]]; then
+          if [[ $branch_name == major/* || $branch_name == release/* ]]; then
             echo "bump=major" >> $GITHUB_ENV
-          elif [[ $branch_name == minor/* ]]; then
+          elif [[ $branch_name == minor/* || $branch_name == feature/* || $branch_name == task/* || $branch_name == refactor/* || $branch_name == poc/* || $branch_name == innovation/* ]]; then
             echo "bump=minor" >> $GITHUB_ENV
-          elif [[ $branch_name == patch/* ]]; then
+          elif [[ $branch_name == patch/* || $branch_name == bug/* || $branch_name == doc/* || $branch_name == tools/* || $branch_name == hotfix/* ]]; then
             echo "bump=patch" >> $GITHUB_ENV
           else
-            echo echo "bump=patch" >> $GITHUB_ENV
+            echo "bump=patch" >> $GITHUB_ENV
           fi
 
       - name: Update version.txt
