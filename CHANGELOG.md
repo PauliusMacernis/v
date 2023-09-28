@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.330.2
+* POC-7 Revert changes to fix version inconsistency. PR title1
+
+
 ## 8.330.1
 * One more change. (POC-7)
 
