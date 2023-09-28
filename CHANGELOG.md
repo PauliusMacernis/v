@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.330.6
+* POC-9 Adding PR template. Title. PR title1.
+
+
 ## 8.330.5
 * POC-9 This line is added in the scope of a task. PR title1
 
