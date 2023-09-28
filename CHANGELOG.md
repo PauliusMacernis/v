@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.331.0
+* POC-9 changing the way version bump is achieved PR t1
+
+
 ## 8.330.7
 * POC-9 adding feat/ and some debug info. PR t1
 
