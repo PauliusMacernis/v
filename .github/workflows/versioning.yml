@@ -19,19 +19,21 @@ jobs:
         run: |
           branch_name=${{ github.event.pull_request.head.ref }}
           if [[ $branch_name == major/* || $branch_name == release/* ]]; then
-            echo "bump=major" >> $GITHUB_ENV
-          elif [[ $branch_name == minor/* || $branch_name == feature/* || $branch_name == task/* || $branch_name == refactor/* || $branch_name == poc/* || $branch_name == innovation/* ]]; then
-            echo "bump=minor" >> $GITHUB_ENV
+            echo "BUMP=major" >> $GITHUB_ENV
+          elif [[ $branch_name == minor/* || $branch_name == feature/* || $branch_name == feat/* || $branch_name == task/* || $branch_name == refactor/* || $branch_name == poc/* || $branch_name == innovation/* ]]; then
+            echo "BUMP=minor" >> $GITHUB_ENV
           elif [[ $branch_name == patch/* || $branch_name == bug/* || $branch_name == doc/* || $branch_name == tools/* || $branch_name == hotfix/* ]]; then
-            echo "bump=patch" >> $GITHUB_ENV
+            echo "BUMP=patch" >> $GITHUB_ENV
           else
-            echo "bump=patch" >> $GITHUB_ENV
+            echo "BUMP=patch" >> $GITHUB_ENV
           fi
 
       - name: Update version.txt
         run: |
           version=$(cat version.txt)
-          bump="${{ steps.get_version_bump.outputs.bump }}"
+          bump=${{ env.BUMP }}
+          echo "Current version: $version"
+          echo "Bump: $bump"
           
           if [[ $bump == "major" ]]; then
             new_version=$(echo $version | awk -F. '{$1 = $1 + 1; $2 = 0; $3 = 0;} 1' OFS=.)
@@ -47,17 +49,28 @@ jobs:
         run: |
           new_version=$(cat version.txt)
           awk -v ver="$new_version" -v title="${{ github.event.pull_request.title }}" '{
-            print;
-            if (NR==1) {
-              print "\n## " ver "\n* " title "\n";
-            }
+          print;
+          if (NR==1) {
+           print "\n## " ver "\n* " title "\n";
+          }
           }' CHANGELOG.md > CHANGELOG.tmp && mv CHANGELOG.tmp CHANGELOG.md
 
-      - name: Set up Git with PAT, Commit and push
+      - run: git tag -l
+
+      - name: Set up Git with PAT, Commit, Tag and push
         run: |
           git config --local user.email "sugalvojau@gmail.com"
           git config --local user.name "GitHub Action"
           git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
           git add CHANGELOG.md version.txt
           git commit -m "Update CHANGELOG.md and version.txt"
+          
+          # Create a tag
+          new_version=$(cat version.txt)
+          git tag "v$new_version"
+          
+          # Push changes and tags
           git push
+          git push --tags
+
+      - run: git tag -l

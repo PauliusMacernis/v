@@ -1,5 +1,53 @@
 # Changelog
 
+## 8.335.0
+* Task/poc 9 my random task. PRt1
+
+
+## 8.334.0
+* POC-9 Updating README.second.md PRt1
+
+
+## 8.333.3
+* Bug/poc 8 some bug name. t1
+
+
+## 8.333.2
+* POC-8 pull_request_template.md moved to another default dir. PRt1
+
+
+## 8.333.1
+* POC-8 README.second.md change like a bugfix. PRt1
+
+
+## 8.333.0
+* Task/poc 9 my random task. PRt1
+
+
+## 8.332.0
+* POC-9 Some fixes PRt1
+
+
+## 8.331.0
+* POC-9 changing the way version bump is achieved PR t1
+
+
+## 8.330.7
+* POC-9 adding feat/ and some debug info. PR t1
+
+
+## 8.330.6
+* POC-9 Adding PR template. Title. PR title1.
+
+
+## 8.330.5
+* POC-9 This line is added in the scope of a task. PR title1
+
+
+## 8.330.4
+* POC-8 This line is added in the scope of a bug. PR title1
+
+
 ## 8.330.3
 * Patch/poc 7 PR title1
 
