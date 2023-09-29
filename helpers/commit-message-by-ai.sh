@@ -11,10 +11,10 @@ curl --version
 jq --version
 
 # Generate git diff
-git diff && git diff --cached > temp/git_diff_output.txt
+git diff && git diff --cached > './.temp/git_diff_output.txt'
 
 # Check if diff_output.txt is empty
-if [[ ! -s temp/git_diff_output.txt ]]; then
+if [[ ! -s './.temp/git_diff_output.txt' ]]; then
     echo "No differences found."
     exit 0
 fi
@@ -26,8 +26,8 @@ fi
 
 # Create a JSON payload using jq
 PAYLOAD=$(jq -n \
-            --arg diff "$(cat temp/git_diff_output.txt)" \
-            '{prompt: ("Describe the main action and purpose of the following code change in a clear and concise manner, limit the response to 50 characters:" + $diff), max_tokens: 150}')
+            --arg diff "$(cat './.temp/git_diff_output.txt')" \
+            '{prompt: ("Describe the main intent of the following code change in a clear and concise manner, limit the response to 50 characters, it will be in use for git commit message, all of the following is a git diff of the change: " + $diff), max_tokens: 150}')
 
 # Send to AI and get summary using the /completions endpoint
 RESPONSE=$(curl -s -X POST -H "Authorization: Bearer $OPENAI_API_KEY" \
