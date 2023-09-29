@@ -1,43 +1,42 @@
 # About
 
-This is a Proof of Concept of a versioning system for a Github hosted project.
+This repository contains a Proof of Concept for a versioning system hosted on Github.
 
+## Building Blocks of the Solution
 
-## Building blocks of the solution
+The primary component of this system is:
 
-Main part of the system is:
+- `.github/workflows/versioning.yml`: A Github Action workflow that is triggered when a pull request is closed.
 
-- `.github/workflows/versioning.yml` - a Github Action workflow which triggers after a pull request is closed.
+Other notable components include:
 
-Other mentionable parts of the system are:
+- `.github/pull_request_template.md`: A template that is automatically applied when creating a new pull request.
+- `helpers/commit-message-by-ai.sh`: A script that suggests a commit message based on the git diff. It's designed for macOS; Linux compatibility hasn't been tested.
+- `helpers/pr-message-by-ai.sh`: A script that suggests a pull request message based on the git diff. Like the previous script, it's tailored for macOS, with Linux compatibility untested.
 
-- `.github/pull_request_template.md` - a template for a pull request which will be applied at the time of creating a pull request.
-- `helpers/commit-message-by-ai.sh` - a script which suggests a _commit message_ based on the git diff. This script is meant to be run on a mac, linux is no tested.
-- `helpers/pr-message-by-ai.sh` - a script which suggests a _pull request_ message based on the git diff. This script is meant to be run on a mac, linux is no tested.
+## Workflow Overview
 
+1. Start with a main branch (e.g., `master`). When creating a new branch, use a prefix like `bug/`, `task/`, or `feat/`.
+2. After coding, consider using the commit message suggestion script: `./helpers/commit-message-by-ai.sh "YOUR_OPENAI_API_KEY"`. If the suggested message isn't satisfactory, run the script again or craft your own message.
+3. Once you've committed your changes, open a pull request on github.com, e.g., merging `bug/TASK-123_Exchanging_x_with_y` into `master`. The pull request template will be applied automatically.
+4. If you wish to modify the pull request message, use the script: `./pr-message-by-ai.sh "master" "bug/TASK-123_Exchanging_x_with_y" "YOUR_OPENAI_API_KEY"`. This will suggest you the message which you may use or not.
+5. Upon closing the pull request, the `.github/workflows/versioning.yml` is triggered, leading to:
+    - The latest version is determined based on the branch prefix:
+      - **major**: major/, release/
+      - **minor**: minor/, feature/, feat/, task/, refactor/, poc/, innovation/
+      - **patch**: patch/, bug/, doc/, tools/, hotfix/, **any other**
+    - An update to `version.txt` with the latest version, adhering to Semantic Versioning rules.
+    - An update to `CHANGELOG.md` with the latest changes. Version number and Initial pull request title goes as a content.
+    - Creation of a git tag corresponding to the new version.
+    - Pushing `version.txt`, `CHANGELOG.md`, and the new tag to the remote git repository.
 
-## How it all works in a flow
+## Important Notes
 
-- You have a main branch (e.g. `master`) as usual, then you branch from it by applying a prefix to the new branch name (e.g. `bug/`, `task/`, `feat/`). 
-- After you are done with coding a piece, you may want to run a commit message suggestion script, e.g.: `./helpers/commit-message-by-ai.sh "YOUR_OPENAI_API_KEY_MUST_BE_PLACED_HERE"`. Run it several times to get another message if the current one is not good enough. You may copy > paste the suggested message to your own commit message or not, it's up to you. The script is suggesting only.
-- After you are done with committing, you go to github.com and open a pull request, e.g. to merge your new branch `bug/TASK-123_Exchanging_x_with_y` into `master`. Pull request template (`.github/pull_request_template.md`) applies automatically and you have a prepared pull request comment.
-- In case you want to modify pull request template but don't want to think by too much, then you run another script, e.g. `./pr-message-by-ai.sh "master" "bug/TASK-123_Exchanging_x_with_y" "YOUR_OPENAI_API_KEY_MUST_BE_PLACED_HERE"` which will suggest you the pull request message. You may copy > paste the suggested message to your own pull request message or not, it's up to you. The script is suggesting only.
-- After the pull request is done, at some time you close it. When you close the pull request then `.github/workflows/versioning.yml` triggers on the github.com Actions side and the following happens:
-  - `version.txt` is updated with the newest version following the Semantic versioning rules (major, minor or patch number increase is determinated by the name of the branch which is merging in),
-  - `CHANGELOG.md` is updated with the newest changes: version number as a header of the new section and the initial pull request title as a text of the new section.
-  - tag corresponding to the new version is created in the git repository.
-  - `version.txt`, `CHANGELOG.md` and the tag are pushed to the remote git repository.
-
-
-## Gotchas
-
-- Make sure you have "Read and write permissions" set for the Github Actions in your repository settings (Settings > Actions > General > Workflow permissions).
-- Make sure you have generated your own Personal Access Token (Settings > Developer settings > Personal access tokens. The token must have `repo` scope.
-- Make sure you have set the new Personal Access Token as a secret in your repository settings (Settings > Secrets and variables > Actions > Secrets > Repository secrets > add a key "GH_PAT" and the value you have got from the general settings).
-- Make sure you have some money in your OpenAI account to pay for the API calls (Plus subscription to ChatGPT is not the same thing). Also, make sure you have Open AI API key generated for legit use in your OpenAI account settings (https://platform.openai.com/account/api-keys)
-
+- Ensure "Read and write permissions" are enabled for Github Actions in your repository (Settings > Actions > General > Workflow permissions).
+- Generate a Personal Access Token with `repo` scope (Settings > Developer settings > Personal access tokens).
+- Add the token as a secret in your repository settings with the key "GH_PAT" (Settings > Secrets and variables > Actions > Secrets > Repository secrets).
+- Ensure your OpenAI account has sufficient funds for API calls. Note that a Plus subscription to ChatGPT isn't equivalent. Generate a valid OpenAI API key in your OpenAI account settings (https://platform.openai.com/account/api-keys).
 
 ## Disclaimer
 
-Helper scripts ([commit-message-by-ai.sh](helpers%2Fcommit-message-by-ai.sh), [pr-message-by-ai.sh](helpers%2Fpr-message-by-ai.sh)) use OpenAI to get the suggestions. Be concious, sending your code to the OpenAI API may be a security risk (e.g. if you share a propriatary info this way). Use it at your own risk.
-
+The helper scripts ([commit-message-by-ai.sh](helpers%2Fcommit-message-by-ai.sh) and [pr-message-by-ai.sh](helpers%2Fpr-message-by-ai.sh)) utilize OpenAI for suggestions. Be cautious: sharing code with the OpenAI API might pose a security risk, especially if proprietary information is involved. Use these scripts at your discretion and risk.
