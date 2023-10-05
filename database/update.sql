@@ -1,1 +1,1 @@
-RENAME TABLE poc TO feature;
+RENAME TABLE poc2 TO poc;
