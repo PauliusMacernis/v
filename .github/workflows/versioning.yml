@@ -64,6 +64,8 @@ jobs:
           MIN_PATCH_VERSION_DIGITS: 2
           MIN_CHANGESET_DIGITS: 4
         run: |
+          set -euxo pipefail
+          
           gen_version() {
             local rawVersion=$1
             local minDigits=$2
