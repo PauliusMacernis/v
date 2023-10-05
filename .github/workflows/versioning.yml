@@ -81,31 +81,36 @@ jobs:
           # Determine the last existing version for rollback
           lastExistingVersion=$(find database/ -name "*.update.sql" | sort -V | tail -n 1 | grep -oP '\d{10}')
 
-          if [[ -f "database/new/update.sql" ]]; then
-            echo -e "\nINSERT INTO db_version (revision, direction) VALUES (${newDBRevisionNumber}, 'update');" >> database/new/update.sql
+          if [[ -z "$lastExistingVersion" ]]; then
+            # If it's the first DB version, set the last existing version to 0
+            lastExistingVersion=0
+          fi
+
+          if [[ -f "database/update.sql" ]]; then
+            echo -e "\nINSERT INTO db_version (revision, direction) VALUES (${newDBRevisionNumber}, 'update');" >> database/update.sql
             if [[ "${{ env.BUMP }}" == "major" ]]; then
               mkdir -p database/$major.0.x/
-              mv database/new/update.sql database/$major.0.x/${newDBRevisionNumber}.update.sql
+              mv database/update.sql database/$major.0.x/${newDBRevisionNumber}.update.sql
             elif [[ "${{ env.BUMP }}" == "minor" ]]; then
               mkdir -p database/$major.$minor.x/
-              mv database/new/update.sql database/$major.$minor.x/${newDBRevisionNumber}.update.sql
+              mv database/update.sql database/$major.$minor.x/${newDBRevisionNumber}.update.sql
             elif [[ "${{ env.BUMP }}" == "patch" ]]; then
               mkdir -p database/$major.$minor.x/
-              mv database/new/update.sql database/$major.$minor.x/${newDBRevisionNumber}.update.sql
+              mv database/update.sql database/$major.$minor.x/${newDBRevisionNumber}.update.sql
             fi
           fi
 
-          if [[ -f "database/new/rollback.sql" ]]; then
-            echo -e "\nINSERT INTO db_version (revision, direction) VALUES (${lastExistingVersion}, 'rollback');" >> database/new/rollback.sql
+          if [[ -f "database/rollback.sql" ]]; then
+            echo -e "\nINSERT INTO db_version (revision, direction) VALUES (${lastExistingVersion}, 'rollback');" >> database/rollback.sql
             if [[ "${{ env.BUMP }}" == "major" ]]; then
               mkdir -p database/$major.0.x/
-              mv database/new/rollback.sql database/$major.0.x/${newDBRevisionNumber}.rollback.sql
+              mv database/rollback.sql database/$major.0.x/${newDBRevisionNumber}.rollback.sql
             elif [[ "${{ env.BUMP }}" == "minor" ]]; then
               mkdir -p database/$major.$minor.x/
-              mv database/new/rollback.sql database/$major.$minor.x/${newDBRevisionNumber}.rollback.sql
+              mv database/rollback.sql database/$major.$minor.x/${newDBRevisionNumber}.rollback.sql
             elif [[ "${{ env.BUMP }}" == "patch" ]]; then
               mkdir -p database/$major.$minor.x/
-              mv database/new/rollback.sql database/$major.$minor.x/${newDBRevisionNumber}.rollback.sql
+              mv database/rollback.sql database/$major.$minor.x/${newDBRevisionNumber}.rollback.sql
             fi
           fi
 
