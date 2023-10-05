@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.335.4
+* IR-123 DB versioning solution. Solution tweaking.
+
+
 ## 8.335.3
 * Bug/ir 123 bug fix this
 
