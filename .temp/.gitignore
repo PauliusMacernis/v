@@ -3,6 +3,3 @@
 
 # But don't ignore the .gitignore file itself
 !.gitignore
-
-# Don't ignore the specific directory you want to keep
-!your_directory_name/
