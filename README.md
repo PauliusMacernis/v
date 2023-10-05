@@ -27,6 +27,7 @@ Other notable components include:
       - **patch**: patch/, bug/, doc/, tools/, hotfix/, **any other**
     - An update to `version.txt` with the latest version, adhering to Semantic Versioning rules.
     - An update to `CHANGELOG.md` with the latest changes. Version number and Initial pull request title goes as a content.
+    - An update to `database` directory - moving `database\update.sql` and `database\rollback.sql` files to appropriate version dir and appending one extra query to each.
     - Creation of a git tag corresponding to the new version.
     - Pushing `version.txt`, `CHANGELOG.md`, and the new tag to the remote git repository.
 
