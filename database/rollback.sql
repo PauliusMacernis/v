@@ -1,2 +1,0 @@
-RENAME TABLE poc2 TO poc;
-
