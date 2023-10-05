@@ -57,6 +57,58 @@ jobs:
 
       - run: git tag -l
 
+      - name: Check and move SQL files and append query
+        env:
+          MIN_MAJOR_VERSION_DIGITS: 2
+          MIN_MINOR_VERSION_DIGITS: 2
+          MIN_PATCH_VERSION_DIGITS: 2
+          MIN_CHANGESET_DIGITS: 4
+        run: |
+          gen_version() {
+            local rawVersion=$1
+            local minDigits=$2
+            echo -n "$(printf "%0${minDigits}d\n" ${rawVersion})"
+          }
+
+          new_version=$(cat version.txt)
+          major=$(gen_version $(echo $new_version | cut -d. -f1) $MIN_MAJOR_VERSION_DIGITS)
+          minor=$(gen_version $(echo $new_version | cut -d. -f2) $MIN_MINOR_VERSION_DIGITS)
+          patch=$(gen_version $(echo $new_version | cut -d. -f3) $MIN_PATCH_VERSION_DIGITS)
+          changeset=$(gen_version 0 $MIN_CHANGESET_DIGITS)  # Assuming changeset starts from 0
+
+          newDBRevisionNumber="${major}${minor}${patch}${changeset}"
+
+          # Determine the last existing version for rollback
+          lastExistingVersion=$(find database/ -name "*.update.sql" | sort -V | tail -n 1 | grep -oP '\d{10}')
+
+          if [[ -f "database/new/update.sql" ]]; then
+            echo -e "\nINSERT INTO db_version (revision, direction) VALUES (${newDBRevisionNumber}, 'update');" >> database/new/update.sql
+            if [[ "${{ env.BUMP }}" == "major" ]]; then
+              mkdir -p database/$major.0.x/
+              mv database/new/update.sql database/$major.0.x/${newDBRevisionNumber}.update.sql
+            elif [[ "${{ env.BUMP }}" == "minor" ]]; then
+              mkdir -p database/$major.$minor.x/
+              mv database/new/update.sql database/$major.$minor.x/${newDBRevisionNumber}.update.sql
+            elif [[ "${{ env.BUMP }}" == "patch" ]]; then
+              mkdir -p database/$major.$minor.x/
+              mv database/new/update.sql database/$major.$minor.x/${newDBRevisionNumber}.update.sql
+            fi
+          fi
+
+          if [[ -f "database/new/rollback.sql" ]]; then
+            echo -e "\nINSERT INTO db_version (revision, direction) VALUES (${lastExistingVersion}, 'rollback');" >> database/new/rollback.sql
+            if [[ "${{ env.BUMP }}" == "major" ]]; then
+              mkdir -p database/$major.0.x/
+              mv database/new/rollback.sql database/$major.0.x/${newDBRevisionNumber}.rollback.sql
+            elif [[ "${{ env.BUMP }}" == "minor" ]]; then
+              mkdir -p database/$major.$minor.x/
+              mv database/new/rollback.sql database/$major.$minor.x/${newDBRevisionNumber}.rollback.sql
+            elif [[ "${{ env.BUMP }}" == "patch" ]]; then
+              mkdir -p database/$major.$minor.x/
+              mv database/new/rollback.sql database/$major.$minor.x/${newDBRevisionNumber}.rollback.sql
+            fi
+          fi
+
       - name: Set up Git with PAT, Commit, Tag and push
         run: |
           git config --local user.email "sugalvojau@gmail.com"
