@@ -1,5 +1,9 @@
 # Changelog
 
+## 8.335.2
+* Bug/ir 123 bug fix this
+
+
 ## 8.335.1
 * IR-123 Did the change. PRt1
 
