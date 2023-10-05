@@ -94,13 +94,13 @@ jobs:
 
             if [[ "${{ env.BUMP }}" == "major" ]]; then
               mkdir -p database/$major.0.x/
-              mv database/update.sql database/$major.0.x/${newDBRevisionNumber}.update.sql
+              git mv database/update.sql database/$major.0.x/${newDBRevisionNumber}.update.sql
             elif [[ "${{ env.BUMP }}" == "minor" ]]; then
               mkdir -p database/$major.$minor.x/
-              mv database/update.sql database/$major.$minor.x/${newDBRevisionNumber}.update.sql
+              git mv database/update.sql database/$major.$minor.x/${newDBRevisionNumber}.update.sql
             elif [[ "${{ env.BUMP }}" == "patch" ]]; then
               mkdir -p database/$major.$minor.x/
-              mv database/update.sql database/$major.$minor.x/${newDBRevisionNumber}.update.sql
+              git mv database/update.sql database/$major.$minor.x/${newDBRevisionNumber}.update.sql
             fi
           fi
 
@@ -110,13 +110,13 @@ jobs:
 
             if [[ "${{ env.BUMP }}" == "major" ]]; then
               mkdir -p database/$major.0.x/
-              mv database/rollback.sql database/$major.0.x/${newDBRevisionNumber}.rollback.sql
+              git mv database/rollback.sql database/$major.0.x/${newDBRevisionNumber}.rollback.sql
             elif [[ "${{ env.BUMP }}" == "minor" ]]; then
               mkdir -p database/$major.$minor.x/
-              mv database/rollback.sql database/$major.$minor.x/${newDBRevisionNumber}.rollback.sql
+              git mv database/rollback.sql database/$major.$minor.x/${newDBRevisionNumber}.rollback.sql
             elif [[ "${{ env.BUMP }}" == "patch" ]]; then
               mkdir -p database/$major.$minor.x/
-              mv database/rollback.sql database/$major.$minor.x/${newDBRevisionNumber}.rollback.sql
+              git mv database/rollback.sql database/$major.$minor.x/${newDBRevisionNumber}.rollback.sql
             fi
           fi
       
